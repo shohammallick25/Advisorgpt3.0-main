@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdvisorGPT Demo</title>
+
+    <link rel="shortcut icon" href="./aiicon.png" type="image/png">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="guide.css">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background: #0d1117;
+    color: #fff;
+  }
+
+  /* Main background particles */
+  
+
+  
+
+  /* Sidebar - blurry/frosted glass */
+  /* Blurry Glass Sidebar */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+
+    background: rgba(15, 23, 42, 0.55); /* semi transparent dark */
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-right: 1px solid rgba(60, 56, 75, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    padding: 20px;
+    color: #e0e6ff; /* soft light text */
+    transition: all 0.3s ease;
+}
+  
+
+  .sidebar h2 a {
+    text-decoration: none;
+    color: #6295c8;
+  }
+
+  .sidebar hr {
+    border-color: rgba(188, 169, 169, 0.2);
+    margin: 10px 0;
+  }
+
+  .profile p {
+    color: #e3e3eb;
+  }
+
+  .menu .menu-item {
+    display: block;
+    padding: 8px 5px;
+    text-decoration: none;
+    color: #e0e6ff;
+    border-radius: 6px;
+    margin: 5px 0;
+    transition: 0.3s;
+  }
+
+  .menu .menu-item:hover {
+    background: rgba(13, 123, 234, 0.329);
+    color: #d1caca;
+  }
+
+  .new-chat-container button {
+    background: #1E90FF;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+  }
+
+  .new-chat-container button:hover {
+    background: #00BFFF;
+  }
+
+  /* Chat area */
+  
+
+  /* Chat box particles */
+  #particles-chat {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 15px;
+  }
+
+  /* Chat box */
+  .chat-box {
+   flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 9px;
+
+  }
+
+  .message.ai img {
+    width: 30px;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  
+
+  /* Welcome inside chat */
+  #welcome-text {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 2;
+    text-align: center;
+    animation: fadeInDown 1.5s ease forwards;
+  }
+
+  .advisor-text {
+    background: linear-gradient(90deg, #1E90FF, #00BFFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    100% { opacity: 1; transform: translate(-50%, 0); }
+  }
+
+  @keyframes glow {
+    0% { text-shadow: 0 0 5px #1E90FF, 0 0 10px #1E90FF; }
+    100% { text-shadow: 0 0 15px #1E90FF, 0 0 25px #00BFFF; }
+  }
+</style>
+</head>
+
+<body>
+<div id="particles-js"></div>
+
+
+<!-- Hamburger Menu -->
+<button class="hamburger" onclick="toggleSidebar()" title="মেনু"><i class="fa-solid fa-bars"></i></button>
+<div class="overlay" id="overlay" onclick="closeSidebar()">
+
+    <div id="menu" class="fas fa-bars"></div>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <button class="nav-close-btn" aria-label="close menu" onclick="closeSidebar()">
+        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+    </button>
+
+
+</div>
+
+
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+
+        <h2>
+            <a href="index.html" class="header-link">AdvisorGPT</a>
+        </h2>     <hr>
+        <div class="profile">
+            <i class="fa-solid fa-user-circle fa-3x"></i>
+            <p><strong>Shoham</strong></p>
+        </div>
+        <div class="menu">
+            <a href="chat-history.html" class="menu-item">
+                <i class="fa-solid fa-comments"></i> চ্যাট ইতিহাস
+            </a>
+            <a href="document.html" class="menu-item">
+                <i class="fa-solid fa-file-lines"></i> আইনি নথি
+            </a>
+            <a href="guide.html" class="menu-item">
+                <i class="fa-solid fa-gavel"></i> আইন গাইড
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fa-solid fa-tools"></i> সেটিংস
+            </a>
+            <a href="help.html" class="menu-item">
+                <i class="fa-solid fa-question-circle"></i>সাহায্য
+
+            </a>
+            <a href="#logout" class="menu-item">
+                <i class="fa-solid fa-right-from-bracket"></i> লগ আউট
+            </a>
+        </div>
+
+        <!-- New Chat Button (Separate at Bottom) -->
+        <div class="new-chat-container">
+            <a href="index.html" class="header-link"><button id="new-chat-btn" onclick="startNewChat()"><i class="fa-solid fa-plus"></i> নতুন চ্যাট</button></a>
+        </div>
+
+    </div>
+
+
+    <!-- Chat Area -->
+    <div class="chat-area" id="chat-area">
+        <div class="chat-box" id="chat-box">
+            <br>
+        <h1><i class="fa-solid fa-gavel"></i> আইন গাইড</h1>
+        <div class="guide-container">
+            <input type="text" id="search-guide" class="guide-search" placeholder="আইনের বিষয় খুঁজুন..." onkeyup="filterFAQ()">
+            <!-- FAQ Items -->
+            <div class="faq-item">
+                <div class="faq-question">বিবাহ ও পরিবার<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    বিবাহ-বিচ্ছেদ, হেফাজত, পারিবারিক মামলা ইত্যাদি।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="https://www.banglalawshub.com/2023/09/marriage-laws-in-bangladesh.html" class="related-btn">Open relevant documents</a>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">ফৌজদারি আইন<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    দণ্ডবিধি, মামলা প্রক্রিয়া, অপরাধ সংক্রান্ত আইন ও উদাহরণ।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="https://www.banglalawshub.com/2023/09/criminal-laws-in-bangladesh.html" class="related-btn">Open relevant documents</a>
+            </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">অর্থনীতি ও চুক্তি আইন<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    চুক্তিপত্র, বাণিজ্যিক আইন, ব্যাংক এবং আর্থিক সম্পর্ক।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="https://www.banglalawshub.com/2023/09/business-laws-in-bangladesh.html" class="related-btn">Open relevant documents</a>                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">মৌলিক অধিকার<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    সংবিধান অনুযায়ী নাগরিকের অধিকার এবং দায়িত্ব।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="document.html?topic=rights" class="related-btn">Open relevant documents</a>                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">শ্রম আইন<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    শ্রমিক ও চাকরিজীবীর অধিকার, চাকরি চুক্তি, বেতন এবং ছুটির নিয়ম।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="document.html?topic=rights" class="related-btn">Open relevant documents</a>                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">পরিবেশ আইন<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    পরিবেশ সংরক্ষণ, দূষণ নিয়ন্ত্রণ এবং সংশ্লিষ্ট মামলা।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="document.html?topic=rights" class="related-btn">Open relevant documents</a>                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">সাইবার ও তথ্য প্রযুক্তি আইন<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    হ্যাকিং, অনলাইন প্রতারণা, ডিজিটাল অধিকার এবং তথ্য সুরক্ষা।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="document.html?topic=rights" class="related-btn">Open relevant documents</a>                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">ভূমি ও সম্পত্তি আইন<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    জমি হস্তান্তর, দলিল, পারিবারিক সম্পত্তি বিরোধ, মালিকানা আইন।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="document.html?topic=rights" class="related-btn">Open relevant documents</a>                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">পরিবহন ও যানবাহন আইন<i class="fa-solid fa-plus"></i></div>
+                <div class="faq-answer">
+                    ট্রাফিক আইন, সড়ক দুর্ঘটনা মামলা, লাইসেন্স ও যানবাহন সংক্রান্ত বিধি।<br>
+                    <a href="chat-history.html?topic=rights" class="related-btn">View related chats</a>
+                    <a href="document.html?topic=rights" class="related-btn">Open relevant documents</a>                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const chatArea = document.getElementById('chat-area');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+        chatArea.style.filter = sidebar.classList.contains('show') ? 'blur(2px)' : 'none';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+        chatArea.style.filter = 'none';
+    }
+
+    // FAQ expand/collapse
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(q => {
+        q.addEventListener('click', () => {
+            q.classList.toggle('active');
+            const answer = q.nextElementSibling;
+            if(answer.style.display === "block"){
+                answer.style.display = "none";
+            } else {
+                answer.style.display = "block";
+            }
+        });
+    });
+
+    // Filter FAQ
+    function filterFAQ() {
+        const query = document.getElementById('search-guide').value.toLowerCase();
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const text = item.querySelector('.faq-question').textContent.toLowerCase();
+            item.style.display = text.includes(query) ? 'block' : 'none';
+        });
+    }
+</script>
+
+<script src="script.js"></script>
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80 },
+      color: { value: "#1E90FF" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: 3 },
+      line_linked: { enable: true, distance: 120, color: "#00BFFF", opacity: 0.4, width: 1 },
+      move: { enable: true, speed: 2 }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } },
+      modes: { grab: { distance: 150, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+  });
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDegCRRf_4auKrbPultsdjT-GjD0RZoasA",
+    authDomain: "lets-chat-app-36890.firebaseapp.com",
+    projectId: "lets-chat-app-36890",
+    storageBucket: "lets-chat-app-36890.appspot.com",
+    messagingSenderId: "237027862848",
+    appId: "1:237027862848:web:9c6992368d00aa100272a5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const logoutLink = document.getElementById('logout-link');
+
+  // Redirect if not logged in
+  onAuthStateChanged(auth, user => {
+    if(!user) window.location.href = 'login.html';
+    else {
+      // Update username dynamically
+      document.getElementById('sidebar-username').textContent = user.displayName || user.email.split('@')[0];
+      document.getElementById('welcome-user').textContent = user.displayName || user.email.split('@')[0];
+    }
+  });
+
+  logoutLink.addEventListener('click', e => {
+    e.preventDefault();
+    signOut(auth).then(() => window.location.href = 'login.html');
+  });
+</script>
+<!-- Particles.js -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80 },
+      color: { value: "#1E90FF" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: 3 },
+      line_linked: { enable: true, distance: 120, color: "#00BFFF", opacity: 0.4, width: 1 },
+      move: { enable: true, speed: 2 }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } },
+      modes: { grab: { distance: 150, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+  });
+</script>
+</body>
+</html>

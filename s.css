@@ -1,0 +1,38 @@
+body { margin:0; font-family:'Noto Sans Bengali', Arial, sans-serif; background: url('https://i.ibb.co/xLhM3Wr/law-wallpaper.jpg') no-repeat center center fixed; background-size: cover; color:#333; transition: background 0.5s, color 0.5s; }
+
+        .container { display:flex; min-height:100vh; backdrop-filter: blur(6px); }
+
+
+/* Main Area */
+        .chat-area { flex:1; padding:30px; overflow-y:auto; transition: color 0.5s; }
+        h1 { margin-top:0; font-size:2rem; text-shadow:1px 1px 2px #fff; }
+
+
+        /* Card */
+        .card { background: rgba(255,255,255,0.95); padding:20px; margin-bottom:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:0.3s; }
+        .card:hover { box-shadow:0 6px 16px rgba(0,0,0,0.25); transform:translateY(-3px); }
+        .card h2 { margin-top:0; margin-bottom:10px; }
+
+        /* Inputs */
+        input[type="text"], input[type="email"], input[type="password"], input[type="file"] { width:100%; padding:8px 10px; margin:6px 0 12px 0; border:1px solid #ccc; border-radius:6px; }
+        body.dark input { background:#2a2a40; color:#f1f1f1; border:1px solid #555; }
+        button { cursor:pointer; border:none; border-radius:6px; padding:10px 16px; font-weight:bold; transition:0.2s; }
+        .save-btn { background:#28a745; color:#fff; }
+        .save-btn:hover { background:#218838; }
+
+        /* Account action buttons */
+        .account-actions { display:flex; gap:12px; margin-top:12px; flex-wrap:wrap; }
+        .account-actions button { flex:1; background:#dc3545; color:#fff; }
+        .account-actions button:hover { background:#c82333; }
+
+        /* Switches */
+        .setting-item { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+        .switch { position: relative; display: inline-block; width:50px; height:26px; }
+        .switch input { opacity:0; width:0; height:0; }
+        .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#ccc; transition:.4s; border-radius:26px; }
+        .slider:before { position:absolute; content:""; height:22px; width:22px; left:2px; bottom:2px; background:white; transition:.4s; border-radius:50%; }
+        input:checked + .slider { background:#28a745; }
+        input:checked + .slider:before { transform:translateX(24px); }
+
+        /* Responsive */
+        @media(max-width:900px){ .container { flex-direction:column; } .sidebar { width:100%; min-height:auto; } .chat-area{padding:20px;} }

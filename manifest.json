@@ -1,0 +1,21 @@
+{
+  "name": "AdvisorGPT Demo",
+  "short_name": "AdvisorGPT",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./src/aiicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./src/aiicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

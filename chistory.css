@@ -1,0 +1,71 @@
+/* ========================
+   Chat History Section
+======================== */
+
+/* হেডলাইন */
+#chat-area h1 {
+    margin: 0 0 8px 0; /* নিচের gap কমানো */
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+/* Chat history list container */
+#chat-history-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 350px; /* scrollbar height */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+/* List item */
+#chat-history-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+/* Hover effect */
+#chat-history-list li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Title + timestamp container */
+#chat-history-list li div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Title text */
+#chat-history-list li span {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* Timestamp */
+#chat-history-list li small {
+    font-size: 0.75rem;
+    color: #555;
+}
+
+/* Delete button */
+#chat-history-list li button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0 4px;
+    transition: color 0.2s ease;
+}
+
+#chat-history-list li button:hover {
+    color: red;
+}

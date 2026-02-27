@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdvisorGPT Demo</title>
+
+    <link rel="shortcut icon" href="./src/aiicon.png" type="image/png">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+
+
+    <style>
+        body { font-family:'Noto Sans Bengali',Arial,sans-serif; margin:0; background:#f7f7f7; transition: background 0.3s;}
+        .container { display:flex; min-height:100vh; }
+        .new-chat-container { margin-top:15px; text-align:center; }
+        .new-chat-container button { padding:8px 12px; border:none; background:#28a745; color:#fff; border-radius:5px; cursor:pointer; }
+        .new-chat-container button:hover { background:#218838; }
+        .chat-area { flex:1; padding:20px; overflow-y:auto; }
+        .help-container { max-width:800px; margin:auto; }
+        .help-search { margin-bottom:15px; display:flex; gap:5px; }
+        .help-search input { flex:1; padding:8px 10px; border-radius:5px; border:1px solid #ccc; }
+        .help-search button { padding:8px; border:none; border-radius:5px; background:#007bff; color:#fff; cursor:pointer; }
+        .help-search button:hover { background:#0056b3; }
+        .help-section { background:#fff; margin-bottom:10px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); overflow:hidden; transition: max-height 0.3s ease; cursor:pointer; }
+        .help-section h3 { margin:0; padding:12px 15px; font-size:1.1rem; background:#f1f1f1; }
+        .help-section p { padding:10px 15px; margin:0; display:none; }
+        .highlight { background: yellow; transition:0.5s; }
+        .ai-suggestion { background:#e0f7fa; padding:10px; margin:5px 0; border-radius:8px; font-style:italic; }
+        .wallpaper-btn { margin-bottom:15px; }
+        .wallpaper-btn button { padding:6px 12px; border:none; border-radius:5px; cursor:pointer; background:#007bff; color:#fff; margin-right:5px; }
+        .wallpaper-btn button:hover { background:#0056b3; }
+        /* Chat bubble style */
+        .chat-bubble { display:flex; margin-bottom:8px; align-items:flex-start; }
+        .chat-bubble img { width:40px; height:40px; border-radius:50%; margin-right:10px; }
+        .chat-bubble .bubble { background:#e0f7fa; padding:8px 12px; border-radius:12px; max-width:70%; }
+        .chat-bubble.user .bubble { background:#d1ffd6; margin-left:auto; margin-right:0; }
+    </style>
+    <style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background: #0d1117;
+    color: #fff;
+  }
+
+  /* Main background particles */
+  
+
+  
+
+  /* Sidebar - blurry/frosted glass */
+  /* Blurry Glass Sidebar */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+
+    background: rgba(15, 23, 42, 0.55); /* semi transparent dark */
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-right: 1px solid rgba(60, 56, 75, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    padding: 20px;
+    color: #e0e6ff; /* soft light text */
+    transition: all 0.3s ease;
+}
+  
+
+  .sidebar h2 a {
+    text-decoration: none;
+    color: #6295c8;
+  }
+
+  .sidebar hr {
+    border-color: rgba(188, 169, 169, 0.2);
+    margin: 10px 0;
+  }
+
+  .profile p {
+    color: #e3e3eb;
+  }
+
+  .menu .menu-item {
+    display: block;
+    padding: 8px 5px;
+    text-decoration: none;
+    color: #e0e6ff;
+    border-radius: 6px;
+    margin: 5px 0;
+    transition: 0.3s;
+  }
+
+  .menu .menu-item:hover {
+    background: rgba(13, 123, 234, 0.329);
+    color: #d1caca;
+  }
+
+  .new-chat-container button {
+    background: #1E90FF;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+  }
+
+  .new-chat-container button:hover {
+    background: #00BFFF;
+  }
+
+  /* Chat area */
+  
+
+  /* Chat box particles */
+  #particles-chat {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 15px;
+  }
+
+  /* Chat box */
+  .chat-box {
+   flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 9px;
+
+  }
+
+  .message.ai img {
+    width: 30px;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  
+
+  /* Welcome inside chat */
+  #welcome-text {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 2;
+    text-align: center;
+    animation: fadeInDown 1.5s ease forwards;
+  }
+
+  .advisor-text {
+    background: linear-gradient(90deg, #1E90FF, #00BFFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    100% { opacity: 1; transform: translate(-50%, 0); }
+  }
+
+  @keyframes glow {
+    0% { text-shadow: 0 0 5px #1E90FF, 0 0 10px #1E90FF; }
+    100% { text-shadow: 0 0 15px #1E90FF, 0 0 25px #00BFFF; }
+  }
+</style>
+</head>
+<body>
+<div id="particles-js"></div>
+
+
+<!-- Hamburger Menu -->
+<button class="hamburger" onclick="toggleSidebar()" title="মেনু"><i class="fa-solid fa-bars"></i></button>
+<div class="overlay" id="overlay" onclick="closeSidebar()">
+
+    <div id="menu" class="fas fa-bars"></div>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <button class="nav-close-btn" aria-label="close menu" onclick="closeSidebar()">
+        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+    </button>
+
+
+</div>
+
+
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+
+        <h2>
+            <a href="index.html" class="header-link">AdvisorGPT</a>
+        </h2>     <hr>
+        <div class="profile">
+            <i class="fa-solid fa-user-circle fa-3x"></i>
+            <p><strong>Shoham</strong></p>
+        </div>
+        <div class="menu">
+            <a href="chat-history.html" class="menu-item">
+                <i class="fa-solid fa-comments"></i> চ্যাট ইতিহাস
+            </a>
+            <a href="document.html" class="menu-item">
+                <i class="fa-solid fa-file-lines"></i> আইনি নথি
+            </a>
+            <a href="guide.html" class="menu-item">
+                <i class="fa-solid fa-gavel"></i> আইন গাইড
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fa-solid fa-tools"></i> সেটিংস
+            </a>
+            <a href="help.html" class="menu-item">
+                <i class="fa-solid fa-question-circle"></i>সাহায্য
+
+            </a>
+            <a href="#logout" class="menu-item">
+                <i class="fa-solid fa-right-from-bracket"></i> লগ আউট
+            </a>
+        </div>
+
+        <!-- New Chat Button (Separate at Bottom) -->
+        <div class="new-chat-container">
+            <a href="index.html" class="header-link"><button id="new-chat-btn" onclick="startNewChat()"><i class="fa-solid fa-plus"></i> নতুন চ্যাট</button></a>
+        </div>
+
+    </div>
+
+
+
+    <!-- Chat Area -->
+    <div class="chat-area" id="chat-area">
+        <div class="chat-box" id="chat-box">
+            <br>
+        <div class="help-container">
+            <h1><i class="fa-solid fa-question-circle"></i> সাহায্য + Interactive AI</h1>
+
+            <div class="wallpaper-btn">
+                <span>ওয়ালপেপার পরিবর্তন করুন:</span>
+                <button onclick="changeWallpaper('#f7f7f7')">ডিফল্ট</button>
+                <button onclick="changeWallpaper('#e0f7fa')">লাইট ব্লু</button>
+                <button onclick="changeWallpaper('#fff3e0')">লাইট অরেঞ্জ</button>
+            </div>
+
+            <div class="help-search">
+                <input type="text" id="faq-search" placeholder="প্রশ্ন লিখুন...">
+
+                <button onclick="startVoiceSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
+
+            </div>
+
+            <div id="chat-box"></div>
+
+            <div id="faq-list">
+                <div class="help-section" data-category="chat"><h3>কিভাবে চ্যাট শুরু করবেন?</h3><p>নতুন চ্যাট বাটন চাপুন বা ইনপুট বক্সে প্রশ্ন লিখুন।</p></div>
+                <div class="help-section" data-category="file"><h3>ফাইল আপলোড</h3><p>ফাইল আপলোড বাটন ব্যবহার করে .doc, .pdf বা ছবি পাঠাতে পারেন।</p></div>
+                <div class="help-section" data-category="voice"><h3>ভয়েস ইনপুট</h3><p>মাইক্রোফোন বাটন ব্যবহার করে সরাসরি প্রশ্ন বলতে পারেন।</p></div>
+                <div class="help-section" data-category="law"><h3>আইন গাইড</h3><p>আইনের বিভিন্ন বিভাগ এবং নির্দেশিকা দেখতে 'আইন গাইড' মেনু ব্যবহার করুন।</p></div>
+                <div class="help-section" data-category="account"><h3>অ্যাকাউন্ট পরিবর্তন</h3><p>সেটিংস থেকে নাম, প্রোফাইল ছবি বা পাসওয়ার্ড পরিবর্তন করুন।</p></div>
+            </div>
+
+
+                <div class="input-bar" style="margin-top:10px; display:flex; gap:5px;">
+                    <input type="text" id="user-input" placeholder="আপনার প্রশ্ন লিখুন..." style="flex:1;">
+                    <button onclick="startVoiceSearch()"><i class="fa-solid fa-microphone"></i></button>
+                    <button onclick="sendHelpMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+
+    <script src="script.js"></script>
+
+<script>
+    // Wallpaper
+    function changeWallpaper(color){
+        document.body.style.background = color;
+        localStorage.setItem('wallpaper', color);
+    }
+    window.addEventListener('load', ()=>{
+        const saved = localStorage.getItem('wallpaper');
+        if(saved) document.body.style.background = saved;
+    });
+
+    // FAQ expand
+    const faqSections = document.querySelectorAll('.help-section');
+    faqSections.forEach(sec=>{
+        sec.addEventListener('click', ()=>{
+            const p = sec.querySelector('p');
+            p.style.display = (p.style.display==='block') ? 'none' : 'block';
+        });
+    });
+
+    // Voice search
+    function startVoiceSearch(){
+        if(!('webkitSpeechRecognition' in window)) { alert('Browser doesn\'t support voice search'); return; }
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang='bn-BD';
+        recognition.interimResults=false;
+        recognition.maxAlternatives=1;
+        recognition.start();
+        recognition.onresult = function(event){
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('user-input').value = transcript;
+            sendHelpMessage();
+        };
+    }
+
+    // Simple AI Suggestion
+    const chatBox = document.getElementById('chat-box');
+    function sendHelpMessage(){
+        const input = document.getElementById('user-input');
+        const text = input.value.trim();
+        if(!text) return;
+
+        // User bubble
+        const userDiv = document.createElement('div');
+        userDiv.className = 'chat-bubble user';
+        userDiv.innerHTML = `<div class="bubble">${text}</div>`;
+        chatBox.appendChild(userDiv);
+
+        // AI bubble
+        const aiDiv = document.createElement('div');
+        aiDiv.className = 'chat-bubble';
+        let response = generateResponse(text);
+        aiDiv.innerHTML = `<img src="aiicon.png"><div class="bubble">${response}</div>`;
+        chatBox.appendChild(aiDiv);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+        input.value='';
+    }
+
+    // Simple FAQ matching
+    function generateResponse(text){
+        text = text.toLowerCase();
+        if(text.includes('চ্যাট')) return 'নতুন চ্যাট শুরু করতে মূল পেজে যান এবং ইনপুট বক্স ব্যবহার করুন।';
+        if(text.includes('ফাইল')) return 'আপনি .doc, .pdf অথবা ছবি আপলোড করতে পারেন ফাইল বাটন দিয়ে।';
+        if(text.includes('ভয়েস') || text.includes('মাইক্রোফোন')) return 'মাইক্রোফোন বাটন ব্যবহার করে সরাসরি প্রশ্ন করতে পারেন।';
+        if(text.includes('আইন')) return 'আইন গাইড মেনু থেকে আইন সম্পর্কিত নির্দেশিকা এবং তথ্য দেখতে পারেন।';
+        if(text.includes('অ্যাকাউন্ট') || text.includes('নাম') || text.includes('পাসওয়ার্ড')) return 'সেটিংস থেকে আপনার প্রোফাইল, নাম বা পাসওয়ার্ড পরিবর্তন করতে পারেন।';
+        return 'দুঃখিত, আমি এই প্রশ্নের সরাসরি উত্তর দিতে পারছি না। বিস্তারিত জানতে FAQ দেখুন।';
+    }
+</script>
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80 },
+      color: { value: "#1E90FF" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: 3 },
+      line_linked: { enable: true, distance: 120, color: "#00BFFF", opacity: 0.4, width: 1 },
+      move: { enable: true, speed: 2 }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } },
+      modes: { grab: { distance: 150, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+  });
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDegCRRf_4auKrbPultsdjT-GjD0RZoasA",
+    authDomain: "lets-chat-app-36890.firebaseapp.com",
+    projectId: "lets-chat-app-36890",
+    storageBucket: "lets-chat-app-36890.appspot.com",
+    messagingSenderId: "237027862848",
+    appId: "1:237027862848:web:9c6992368d00aa100272a5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const logoutLink = document.getElementById('logout-link');
+
+  // Redirect if not logged in
+  onAuthStateChanged(auth, user => {
+    if(!user) window.location.href = 'login.html';
+    else {
+      // Update username dynamically
+      document.getElementById('sidebar-username').textContent = user.displayName || user.email.split('@')[0];
+      document.getElementById('welcome-user').textContent = user.displayName || user.email.split('@')[0];
+    }
+  });
+
+  logoutLink.addEventListener('click', e => {
+    e.preventDefault();
+    signOut(auth).then(() => window.location.href = 'login.html');
+  });
+</script>
+<!-- Particles.js -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80 },
+      color: { value: "#1E90FF" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: 3 },
+      line_linked: { enable: true, distance: 120, color: "#00BFFF", opacity: 0.4, width: 1 },
+      move: { enable: true, speed: 2 }
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } },
+      modes: { grab: { distance: 150, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+    },
+    retina_detect: true
+  });
+</script>
+</body>
+</html>

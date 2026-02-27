@@ -1,0 +1,54 @@
+ /* Guide Page Specific CSS */
+        .guide-container { padding: 15px; }
+
+        .guide-search {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .faq-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 12px 15px;
+            background-color: #f4f4f4;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 12px 15px;
+            display: none;
+            background-color: #fff;
+        }
+
+        .faq-question i { transition: transform 0.3s; }
+
+        .faq-question.active i { transform: rotate(45deg); }
+
+        /* Related buttons */
+        .related-btn {
+            padding: 6px 10px;
+            margin-top: 8px;
+            display: inline-block;
+            background-color: #444;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .related-btn:hover { background-color: #333; }
